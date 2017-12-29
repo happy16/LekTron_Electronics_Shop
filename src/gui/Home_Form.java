@@ -19,11 +19,12 @@ public class Home_Form extends Form_Components implements ActionListener {
     private JButton phonesPanelIconButton = new JButton("Phones and Accessories",new ImageIcon("Resources/Icon Images/smartphones.png"));
     private JPanel tvPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
     private JButton tvPanelIconButton = new JButton("Televisions",new ImageIcon("Resources/Icon Images/tv.png"));
-    //private JPanel allProductPanel = new JPanel(new GridLayout(0,1,50,50));
-    private JPanel allProductPanel = new JPanel();
-    private JPanel productPanel = new JPanel();
-    //private JScrollPane productScrollPane = new JScrollPane(allProductPanel);
+    private JPanel allProductPanel = new JPanel(new GridLayout(0,1,50,50));
+    //private JPanel allProductPanel = new JPanel();
+    private JPanel productPanel = new JPanel(new GridLayout(0,1,50,50));
     private JScrollPane productScrollPane = new JScrollPane(productPanel);
+    //private JScrollPane productScrollPane = new JScrollPane(allProductPanel);
+    //private JScrollPane productScrollPane = new JScrollPane(productPanel);
     private JPanel productOverviewPanel = new JPanel();
     private JLabel productImage = new JLabel(productImageAddress);
     public JLabel productName = new JLabel("Product Name");
@@ -51,7 +52,7 @@ public class Home_Form extends Form_Components implements ActionListener {
         designSideMenu();
         designMenuPanel();
         designMenuPanelContent();
-        //designViewItems();
+        designViewItems();
 
         setVisible(true);
     }
@@ -98,15 +99,15 @@ public class Home_Form extends Form_Components implements ActionListener {
         menuPanel.add(selectCategoryLabel);
     }
 
-    /*public void designViewItems(){
-        productPanel.setLayout(new BoxLayout(productPanel, BoxLayout.PAGE_AXIS));
+    public void designViewItems(){
+        //productPanel.setLayout(new BoxLayout(productPanel, BoxLayout.PAGE_AXIS));
         productScrollPane.setBounds(300,50,700,550);
         productScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         productScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         designProductViewPanel();
-        allProductPanel.add(productPanel);
+        //allProductPanel.add(productPanel);
         add(productScrollPane);
-    }*/
+    }
 
     public void designMenuItems(){
         productPanel.setLayout(null);

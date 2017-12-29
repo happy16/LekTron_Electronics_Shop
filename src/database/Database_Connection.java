@@ -9,6 +9,7 @@ public class Database_Connection {
 
     Connection conn = null;
 
+
     private Connection connect (){
         String url = "jdbc:sqlite:Resources/Database/OopProject.db";
         try {
@@ -19,6 +20,7 @@ public class Database_Connection {
         }
         return conn;
     }
+
     private Connection disconnect (){
         try {
             this.conn.close();
@@ -28,17 +30,19 @@ public class Database_Connection {
         }
         return conn;
     }
+
     public void selectAllPhones(){
         String sql = "SELECT * FROM phones";
 
         try (Connection conn = this.connect();
              Statement stmt  = conn.createStatement();
              ResultSet rs    = stmt.executeQuery(sql)){
-
-            // loop through the result set
             Home_Form home_form = new Home_Form();
+            // loop through the result set
+
             while (rs.next()) {
-                //home_form.designViewItems();
+
+                home_form.designViewItems();
                 home_form.productName.setText(rs.getString("product_name"));
                 home_form.productQuantity.setText(Integer.toString(rs.getInt("product_quantity")));
                 home_form.productPrice.setText(Integer.toString(rs.getInt("product_price")));
@@ -66,6 +70,7 @@ public class Database_Connection {
             e.printStackTrace();
         }
     }
+
     public void insertTelevisions(String product_name, int product_price, int product_quantity, int product_id) {
 
         try {
@@ -270,5 +275,15 @@ public class Database_Connection {
             System.out.println(e.getMessage());
         }
     }
+
+    /*public static void main(String[] args) {
+        Database_Connection app = new Database_Connection();
+        //app.selectAllAdmins();
+        //app.insertPhones("Sony C4",450,50,39);
+        //app.insertRecord();
+        //app.updateRecord();
+        //app.deleteRecord();
+        app.disconnect();
+    }*/
 
 }

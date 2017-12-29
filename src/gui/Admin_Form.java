@@ -5,8 +5,10 @@ import database.Database_Connection;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-public class Admin_Form extends Form_Components {
+public class Admin_Form extends Form_Components implements KeyListener {
 
     private JButton viewPhonesButton = new JButton("View Phones");
     private JButton viewTelevisionsButton = new JButton("View Televisions");
@@ -143,8 +145,11 @@ public class Admin_Form extends Form_Components {
 
         addPhoneNameTextField.setBounds(100,125,150,30);
         addPhonePriceTextField.setBounds(100,175,150,30);
+        addPhonePriceTextField.addKeyListener(this);
         addPhoneProductIDTextField.setBounds(100,225,150,30);
+        addPhoneProductIDTextField.addKeyListener(this);
         addPhoneProductQuantityTextField.setBounds(100,275,150,30);
+        addPhoneProductQuantityTextField.addKeyListener(this);
 
         viewDatabasePanel.setBounds(300,100,550,350);
         viewDatabasePanel.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -236,6 +241,7 @@ public class Admin_Form extends Form_Components {
         addUserButton.addActionListener(this);
         removeUserButton.addActionListener(this);
         updateUserButton.addActionListener(this);
+        addUserIDTextField.addKeyListener(this);
 
         viewItemsPanel.add(addUserButton);
         viewItemsPanel.add(removeUserButton);
@@ -274,8 +280,11 @@ public class Admin_Form extends Form_Components {
 
         addTelevisionNameTextField.setBounds(100,125,150,30);
         addTelevisionPriceTextField.setBounds(100,175,150,30);
+        addTelevisionPriceTextField.addKeyListener(this);
         addTelevisionProductIDTextField.setBounds(100,225,150,30);
+        addTelevisionProductIDTextField.addKeyListener(this);
         addTelevisionProductQuantityTextField.setBounds(100,275,150,30);
+        addTelevisionProductQuantityTextField.addKeyListener(this);
 
         viewDatabasePanel.setBounds(300,100,550,350);
         viewDatabasePanel.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -319,14 +328,208 @@ public class Admin_Form extends Form_Components {
             viewItemsPanel.repaint();
             designViewTelevisions();
         }
-        else if (e.getSource()==addPhonesButton){
-            database_connection.insertPhones(addPhoneNameTextField.getText(),Integer.parseInt(addPhonePriceTextField.getText()),Integer.parseInt(addPhoneProductIDTextField.getText()),Integer.parseInt(addPhoneProductQuantityTextField.getText()));
+        else if (e.getSource()==addPhonesButton) {
+            if (addPhoneNameTextField.getText().length() > 0 && addPhonePriceTextField.getText().length() > 0 && addPhoneProductIDTextField.getText().length() > 0 && addPhoneProductQuantityTextField.getText().length() > 0) {
+                database_connection.insertPhones(addPhoneNameTextField.getText(), Integer.parseInt(addPhonePriceTextField.getText()), Integer.parseInt(addPhoneProductIDTextField.getText()), Integer.parseInt(addPhoneProductQuantityTextField.getText()));
+            }
+            else if (addPhoneNameTextField.getText().length() <1){
+                JOptionPane.showMessageDialog(null,"Please enter phone name", "No Phone name error", JOptionPane.ERROR_MESSAGE);
+            }
+            else if (addPhonePriceTextField.getText().length() <1){
+                JOptionPane.showMessageDialog(null,"Please enter phone price", "No Phone price error", JOptionPane.ERROR_MESSAGE);
+            }
+            else if (addPhoneProductIDTextField.getText().length() <1){
+                JOptionPane.showMessageDialog(null,"Please enter product i.d", "No Product I.D error", JOptionPane.ERROR_MESSAGE);
+            }
+            else if (addPhoneProductQuantityTextField.getText().length() <1){
+                JOptionPane.showMessageDialog(null,"Please enter phone quantity", "No Phone quantity error", JOptionPane.ERROR_MESSAGE);
+            }
         }
-        else if (e.getSource()==removePhonesButton){
+        else if (e.getSource()==updatePhonesButton){
             if (addPhoneProductIDTextField.getText().length()<1){
                 JOptionPane.showMessageDialog(null,"Please enter a product ID", "No Product ID error", JOptionPane.ERROR_MESSAGE);
             }
-            //else if(addPhoneProductIDTextField.getText())
+            else if(addPhoneProductIDTextField.getText().length()>0){
+                database_connection.updatePhones(addPhoneNameTextField.getText(), Integer.parseInt(addPhonePriceTextField.getText()),Integer.parseInt(addPhoneProductIDTextField.getText()), Integer.parseInt(addPhoneProductQuantityTextField.getText()));
+            }
         }
+        else if(e.getSource()==removePhonesButton){
+            if (addPhoneProductIDTextField.getText().length()<1){
+                JOptionPane.showMessageDialog(null,"Please enter a product ID", "No Product ID error", JOptionPane.ERROR_MESSAGE);
+            }
+            else if(addPhoneProductIDTextField.getText().length()>0){
+                database_connection.deletePhones(Integer.parseInt(addPhoneProductIDTextField.getText()));
+            }
+        }
+        else if (e.getSource()==addTelevisionsButton) {
+            if (addTelevisionNameTextField.getText().length() > 0 && addTelevisionPriceTextField.getText().length() > 0 && addTelevisionProductIDTextField.getText().length() > 0 && addTelevisionProductQuantityTextField.getText().length() > 0) {
+                database_connection.insertTelevisions(addTelevisionNameTextField.getText(), Integer.parseInt(addTelevisionPriceTextField.getText()), Integer.parseInt(addTelevisionProductIDTextField.getText()) , Integer.parseInt(addTelevisionProductQuantityTextField.getText()));
+            }
+            else if (addTelevisionNameTextField.getText().length() <1){
+                JOptionPane.showMessageDialog(null,"Please enter television name", "No Television name error", JOptionPane.ERROR_MESSAGE);
+            }
+            else if (addTelevisionPriceTextField.getText().length() <1){
+                JOptionPane.showMessageDialog(null,"Please enter television price", "No Television price error", JOptionPane.ERROR_MESSAGE);
+            }
+            else if (addTelevisionProductIDTextField.getText().length() <1){
+                JOptionPane.showMessageDialog(null,"Please enter product i.d", "No Product I.D error", JOptionPane.ERROR_MESSAGE);
+            }
+            else if (addTelevisionProductQuantityTextField.getText().length() <1){
+                JOptionPane.showMessageDialog(null,"Please enter television quantity", "No Television quantity error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        else if (e.getSource()==removeTelevisionsButton){
+            if (addTelevisionProductIDTextField.getText().length()<1){
+                JOptionPane.showMessageDialog(null,"Please enter a product ID", "No Product ID error", JOptionPane.ERROR_MESSAGE);
+            }
+            else if(addPhoneProductIDTextField.getText().length()>1){
+                database_connection.deleteTelevisions(Integer.parseInt(addTelevisionProductIDTextField.getText()));
+            }
+        }
+        else if (e.getSource()==updateTelevisionsButton){
+            if (addTelevisionProductIDTextField.getText().length()<1){
+                JOptionPane.showMessageDialog(null,"Please enter a product ID", "No Product ID error", JOptionPane.ERROR_MESSAGE);
+            }
+            else if(addPhoneProductIDTextField.getText().length()>1){
+                database_connection.updateTelevisions(addTelevisionNameTextField.getText(), Integer.parseInt(addTelevisionPriceTextField.getText()),Integer.parseInt(addTelevisionProductIDTextField.getText()) , Integer.parseInt(addTelevisionProductQuantityTextField.getText()));
+            }
+        }
+        else if (e.getSource()==addUserButton){
+            if  (addNameTextField.getText().length()<1){
+                JOptionPane.showMessageDialog(null,"Please enter customer name", "No Name error", JOptionPane.ERROR_MESSAGE);
+            }
+            else if (addSurnameTextField.getText().length()<1){
+                JOptionPane.showMessageDialog(null,"Please enter customer surname", "No Surname error", JOptionPane.ERROR_MESSAGE);
+            }
+            else if (addUsernameTextField.getText().length()<1){
+                JOptionPane.showMessageDialog(null,"Please enter customer username", "No Username error", JOptionPane.ERROR_MESSAGE);
+            }
+            else if (addPasswordPasswordField.getPassword().length<1){
+                JOptionPane.showMessageDialog(null,"Please enter customer password", "No Password error", JOptionPane.ERROR_MESSAGE);
+            }
+            else if (addEmailTextField.getText().length()<1){
+                JOptionPane.showMessageDialog(null,"Please enter customer email", "No Email error", JOptionPane.ERROR_MESSAGE);
+            }
+            else if (addGenderMaleRadioButton.isSelected()==false && addGenderFemaleRadioButton.isSelected()==false){
+                JOptionPane.showMessageDialog(null,"Please select customer gender", "No Gender error", JOptionPane.ERROR_MESSAGE);
+            }
+            else if (addUserIDTextField.getText().length()<1){
+                JOptionPane.showMessageDialog(null,"Please enter customer user I.D", "No User I.D error", JOptionPane.ERROR_MESSAGE);
+            }
+            else if (addNameTextField.getText().length()>0 && addSurnameTextField.getText().length()>0 && addUsernameTextField.getText().length()>0 && addPasswordPasswordField.getPassword().length>0 && addEmailTextField.getText().length()>0 && addUserIDTextField.getText().length()>0 && (addGenderMaleRadioButton.isSelected()||addGenderFemaleRadioButton.isSelected()));{
+                String gender = "";
+                if (addGenderFemaleRadioButton.isSelected()){
+                    gender = "Female";
+                }
+                else if (addGenderMaleRadioButton.isSelected()){
+                    gender = "Male";
+                }
+                database_connection.insertUser(addNameTextField.getText(),addSurnameTextField.getText(),addUsernameTextField.getText(),addPasswordPasswordField.getPassword().toString(),addEmailTextField.getText(),gender,Integer.parseInt(addUserIDTextField.getText()));
+            }
+        }
+        else if (e.getSource()==updateUserButton){
+            if  (addNameTextField.getText().length()<1){
+                JOptionPane.showMessageDialog(null,"Please enter customer name", "No Name error", JOptionPane.ERROR_MESSAGE);
+            }
+            else if (addSurnameTextField.getText().length()<1){
+                JOptionPane.showMessageDialog(null,"Please enter customer surname", "No Surname error", JOptionPane.ERROR_MESSAGE);
+            }
+            else if (addUsernameTextField.getText().length()<1){
+                JOptionPane.showMessageDialog(null,"Please enter customer username", "No Username error", JOptionPane.ERROR_MESSAGE);
+            }
+            else if (addPasswordPasswordField.getPassword().length<1){
+                JOptionPane.showMessageDialog(null,"Please enter customer password", "No Password error", JOptionPane.ERROR_MESSAGE);
+            }
+            else if (addEmailTextField.getText().length()<1){
+                JOptionPane.showMessageDialog(null,"Please enter customer email", "No Email error", JOptionPane.ERROR_MESSAGE);
+            }
+            else if (addGenderMaleRadioButton.isSelected()==false && addGenderFemaleRadioButton.isSelected()==false){
+                JOptionPane.showMessageDialog(null,"Please select customer gender", "No Gender error", JOptionPane.ERROR_MESSAGE);
+            }
+            else if (addUserIDTextField.getText().length()<1){
+                JOptionPane.showMessageDialog(null,"Please enter customer user I.D", "No User I.D error", JOptionPane.ERROR_MESSAGE);
+            }
+            else if (addNameTextField.getText().length()>0 && addSurnameTextField.getText().length()>0 && addUsernameTextField.getText().length()>0 && addPasswordPasswordField.getPassword().length>0 && addEmailTextField.getText().length()>0 && addUserIDTextField.getText().length()>0 && (addGenderMaleRadioButton.isSelected()||addGenderFemaleRadioButton.isSelected()));{
+                String gender = "";
+                if (addGenderFemaleRadioButton.isSelected()){
+                    gender = "Female";
+                }
+                else if (addGenderMaleRadioButton.isSelected()){
+                    gender = "Male";
+                }
+                database_connection.updateUsers(addNameTextField.getText(),addSurnameTextField.getText(),addUsernameTextField.getText(),addPasswordPasswordField.getPassword().toString(),addEmailTextField.getText(),gender,Integer.parseInt(addUserIDTextField.getText()));
+            }
+        }
+        else if (e.getSource()==removeUserButton){
+            if (addUserIDTextField.getText().length()<0){
+                JOptionPane.showMessageDialog(null,"Please enter user I.D", "No User I.D error", JOptionPane.ERROR_MESSAGE);
+            }
+            else if (addUserIDTextField.getText().length()>1){
+                database_connection.deleteUser(Integer.parseInt(addUserIDTextField.getText()));
+            }
+        }
+
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        if (e.getSource()==addPhonePriceTextField){
+            char c = e.getKeyChar();
+            if (!(Character.isDigit(c))||c==KeyEvent.VK_BACK_SPACE||c==KeyEvent.VK_DELETE){
+                e.consume();
+            }
+        }
+        else if (e.getSource()==addPhoneProductIDTextField){
+            char c = e.getKeyChar();
+            if (!(Character.isDigit(c))||c==KeyEvent.VK_BACK_SPACE||c==KeyEvent.VK_DELETE){
+                e.consume();
+            }
+        }
+        else if (e.getSource()==addPhoneProductQuantityTextField) {
+            char c = e.getKeyChar();
+            if (!(Character.isDigit(c)) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE) {
+                e.consume();
+            }
+        }
+        else if (e.getSource()==addTelevisionPriceTextField) {
+            char c = e.getKeyChar();
+            if (!(Character.isDigit(c)) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE) {
+                e.consume();
+            }
+        }
+        else if (e.getSource()==addTelevisionProductIDTextField) {
+            char c = e.getKeyChar();
+            if (!(Character.isDigit(c)) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE) {
+                e.consume();
+            }
+        }
+        else if (e.getSource()==addTelevisionProductQuantityTextField) {
+            char c = e.getKeyChar();
+            if (!(Character.isDigit(c)) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE) {
+                e.consume();
+            }
+        }
+        else if (e.getSource()==addUserIDTextField){
+            char c = e.getKeyChar();
+            if (!(Character.isDigit(c)) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE) {
+                e.consume();
+            }
+        }
+        else if (e.getSource()==addUserIDTextField){
+            char c = e.getKeyChar();
+            if (!(Character.isDigit(c)) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE) {
+                e.consume();
+            }
+        }
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
     }
 }
