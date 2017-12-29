@@ -1,11 +1,19 @@
 package gui;
 
 import database.Database_Connection;
+import net.proteanit.sql.DbUtils;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.*;
+import java.util.ArrayList;
 import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
 
 public class Home_Form extends Form_Components implements ActionListener {
 
@@ -22,7 +30,7 @@ public class Home_Form extends Form_Components implements ActionListener {
     private JPanel allProductPanel = new JPanel(new GridLayout(0,1,50,50));
     //private JPanel allProductPanel = new JPanel();
     private JPanel productPanel = new JPanel(new GridLayout(0,1,50,50));
-    private JScrollPane productScrollPane = new JScrollPane(productPanel);
+    //private JScrollPane productScrollPane = new JScrollPane(productPanel);
     //private JScrollPane productScrollPane = new JScrollPane(allProductPanel);
     //private JScrollPane productScrollPane = new JScrollPane(productPanel);
     private JPanel productOverviewPanel = new JPanel();
@@ -40,6 +48,10 @@ public class Home_Form extends Form_Components implements ActionListener {
     public JTextField quantityToBuyTextField = new JTextField();
     private JButton addToBasketButton = new JButton("Add");
 
+    public JTable viewProductsTable = new JTable();
+    private JScrollPane productScrollPane = new JScrollPane(viewProductsTable);
+
+
     public Home_Form(){
         setSize(1000,600);
         setLayout(null);
@@ -52,10 +64,18 @@ public class Home_Form extends Form_Components implements ActionListener {
         designSideMenu();
         designMenuPanel();
         designMenuPanelContent();
-        designViewItems();
+        showAllPhones();
+        //designViewItems();
+
+        productScrollPane.setBounds(300,50,700,550);
+        productScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        productScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        add(productScrollPane);
 
         setVisible(true);
     }
+
+    Connection connection=null;
 
     public void designMenuPanelContent(){
         selectCategoryLabel.setBounds(15,150,200,50);
@@ -97,16 +117,6 @@ public class Home_Form extends Form_Components implements ActionListener {
         menuPanel.add(tvPanel);
         menuPanel.add(phonesPanel);
         menuPanel.add(selectCategoryLabel);
-    }
-
-    public void designViewItems(){
-        //productPanel.setLayout(new BoxLayout(productPanel, BoxLayout.PAGE_AXIS));
-        productScrollPane.setBounds(300,50,700,550);
-        productScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        productScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-        designProductViewPanel();
-        //allProductPanel.add(productPanel);
-        add(productScrollPane);
     }
 
     public void designMenuItems(){
@@ -176,12 +186,55 @@ public class Home_Form extends Form_Components implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource()==phonesPanelIconButton){
-        //designViewItems();
-        database_connection.selectAllPhones();
+            showAllPhones();
+        }
+        else if (e.getSource()==tvPanelIconButton){
+            showAllTelevisions();
         }
 
         if (e.getSource()==customerIconButton){
             login_form.setVisible(true);
         }
     }
+
+    public void showAllPhones(){
+
+        viewProductsTable.setRowHeight(200);
+        viewProductsTable.setBackground(Color.white);
+        viewProductsTable.setShowVerticalLines(false);
+        viewProductsTable.setTableHeader(null);
+        viewProductsTable.setFont(new Font("Tahoma",Font.PLAIN,15));
+        viewProductsTable.setGridColor(menuColor);
+        viewProductsTable.setRowSelectionAllowed(false);
+        viewProductsTable.setColumnSelectionAllowed(false);
+        /*DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        viewProductsTable.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);*/
+
+        connection=Database_Connection.connect();
+        try {
+            String sql = "SELECT * FROM phones";
+            PreparedStatement p = connection.prepareStatement(sql);
+            ResultSet rs = p.executeQuery();
+            viewProductsTable.setModel(DbUtils.resultSetToTableModel(rs));
+        }
+        catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void showAllTelevisions(){
+        connection=Database_Connection.connect();
+        try {
+            String sql = "SELECT * FROM televisions";
+            PreparedStatement p = connection.prepareStatement(sql);
+            ResultSet rs = p.executeQuery();
+            viewProductsTable.setModel(DbUtils.resultSetToTableModel(rs));
+        }
+        catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+
 }

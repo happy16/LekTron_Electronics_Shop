@@ -7,10 +7,10 @@ import java.sql.*;
 
 public class Database_Connection {
 
-    Connection conn = null;
+    static Connection conn = null;
 
 
-    private Connection connect (){
+    public static Connection connect (){
         String url = "jdbc:sqlite:Resources/Database/OopProject.db";
         try {
             conn = DriverManager.getConnection(url);
@@ -21,7 +21,7 @@ public class Database_Connection {
         return conn;
     }
 
-    private Connection disconnect (){
+    public Connection disconnect(){
         try {
             this.conn.close();
         }
@@ -42,7 +42,7 @@ public class Database_Connection {
 
             while (rs.next()) {
 
-                home_form.designViewItems();
+                //home_form.designViewItems();
                 home_form.productName.setText(rs.getString("product_name"));
                 home_form.productQuantity.setText(Integer.toString(rs.getInt("product_quantity")));
                 home_form.productPrice.setText(Integer.toString(rs.getInt("product_price")));
@@ -275,6 +275,8 @@ public class Database_Connection {
             System.out.println(e.getMessage());
         }
     }
+
+
 
     /*public static void main(String[] args) {
         Database_Connection app = new Database_Connection();

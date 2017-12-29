@@ -12,6 +12,7 @@ import java.awt.event.MouseListener;
 public class Form_Components extends JFrame implements ActionListener, MouseListener {
 
     public Database_Connection database_connection= new Database_Connection();
+    //public Basket_form basket_form = new Basket_form();
 
     public JPanel headerPanel = new JPanel();
     public JLabel cartIcon = new JLabel(new ImageIcon("Resources/Icon Images/cart_icon.png"));
@@ -40,7 +41,7 @@ public class Form_Components extends JFrame implements ActionListener, MouseList
         headerPanel.setLayout(null);
         headerPanel.setBounds(300,0,700,50);
         headerPanel.setBackground(new Color(255, 255, 255));
-        cartIcon.setBounds(0,0,50,50);
+        /*cartIcon.setBounds(0,0,50,50);
         cartIconButton.setFocusPainted(false);
         cartIconButton.setBounds(50,0,50,50);
         cartIconButton.setForeground(fontColor);
@@ -49,7 +50,7 @@ public class Form_Components extends JFrame implements ActionListener, MouseList
         cartIconButton.setContentAreaFilled(false);
         cartIconButton.setBackground(Color.white);
         cartIconButton.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.black));
-        cartIconButton.setMargin(new Insets(1,0,1,1));
+        cartIconButton.setMargin(new Insets(1,0,1,1));*/
         headerPanel.add(cartIconButton);
         userPanel.setBounds(200,0,500,50);
         userPanel.setBackground(Color.white);
@@ -64,7 +65,7 @@ public class Form_Components extends JFrame implements ActionListener, MouseList
         customerIconButton.addActionListener(this);
         userPanel.add(customerIconButton);
         headerPanel.add(userPanel);
-        headerPanel.add(cartIcon);
+        //headerPanel.add(cartIcon);
         add(headerPanel);
     }
 

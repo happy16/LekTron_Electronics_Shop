@@ -1,12 +1,17 @@
 package gui;
 
 import database.Database_Connection;
+import net.proteanit.sql.DbUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Admin_Form extends Form_Components implements KeyListener {
 
@@ -57,7 +62,7 @@ public class Admin_Form extends Form_Components implements KeyListener {
     public JTextField addTelevisionProductIDTextField = new JTextField(10);
     private JLabel addTelevisionProductQuantityLabel = new JLabel("Quantity");
     public JTextField addTelevisionProductQuantityTextField = new JTextField(10);
-
+    public JTable viewDatabaseTable = new JTable();
     public JPanel viewDatabasePanel = new JPanel();
 
     Admin_Form(){
@@ -153,6 +158,9 @@ public class Admin_Form extends Form_Components implements KeyListener {
 
         viewDatabasePanel.setBounds(300,100,550,350);
         viewDatabasePanel.setBorder(BorderFactory.createLineBorder(Color.black));
+        viewDatabasePanel.setLayout(null);
+        viewDatabaseTable.setBounds(0,0,550,500);
+        viewDatabasePanel.add(viewDatabaseTable);
         viewItemsPanel.add(viewDatabasePanel);
 
         viewItemsPanel.add(addPhoneNameTextField);
@@ -221,6 +229,7 @@ public class Admin_Form extends Form_Components implements KeyListener {
 
         viewDatabasePanel.setBounds(300,100,550,350);
         viewDatabasePanel.setBorder(BorderFactory.createLineBorder(Color.black));
+        viewDatabasePanel.add(viewDatabaseTable);
         viewItemsPanel.add(viewDatabasePanel);
 
         viewItemsPanel.add(addNameLabel);
@@ -288,6 +297,7 @@ public class Admin_Form extends Form_Components implements KeyListener {
 
         viewDatabasePanel.setBounds(300,100,550,350);
         viewDatabasePanel.setBorder(BorderFactory.createLineBorder(Color.black));
+        viewDatabasePanel.add(viewDatabaseTable);
         viewItemsPanel.add(viewDatabasePanel);
 
         viewItemsPanel.add(addTelevisionNameTextField);
@@ -315,18 +325,21 @@ public class Admin_Form extends Form_Components implements KeyListener {
             viewItemsPanel.revalidate();
             viewItemsPanel.repaint();
             designViewPhonesPanel();
+            showAllPhones();
         }
         else if (e.getSource()==viewUsersButton){
             viewItemsPanel.removeAll();
             viewItemsPanel.revalidate();
             viewItemsPanel.repaint();
             designViewCustomers();
+            showAllUsers();
         }
         else if (e.getSource()==viewTelevisionsButton){
             viewItemsPanel.removeAll();
             viewItemsPanel.revalidate();
             viewItemsPanel.repaint();
             designViewTelevisions();
+            showAllTelevisions();
         }
         else if (e.getSource()==addPhonesButton) {
             if (addPhoneNameTextField.getText().length() > 0 && addPhonePriceTextField.getText().length() > 0 && addPhoneProductIDTextField.getText().length() > 0 && addPhoneProductQuantityTextField.getText().length() > 0) {
@@ -469,6 +482,48 @@ public class Admin_Form extends Form_Components implements KeyListener {
             }
         }
 
+    }
+
+    public void showAllPhones(){
+        Connection connection=null;
+        connection=Database_Connection.connect();
+        try {
+            String sql = "SELECT * FROM phones";
+            PreparedStatement p = connection.prepareStatement(sql);
+            ResultSet rs = p.executeQuery();
+            viewDatabaseTable.setModel(DbUtils.resultSetToTableModel(rs));
+        }
+        catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void showAllTelevisions(){
+        Connection connection=null;
+        connection=Database_Connection.connect();
+        try {
+            String sql = "SELECT * FROM televisions";
+            PreparedStatement p = connection.prepareStatement(sql);
+            ResultSet rs = p.executeQuery();
+            viewDatabaseTable.setModel(DbUtils.resultSetToTableModel(rs));
+        }
+        catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void showAllUsers(){
+        Connection connection=null;
+        connection=Database_Connection.connect();
+        try {
+            String sql = "SELECT * FROM users";
+            PreparedStatement p = connection.prepareStatement(sql);
+            ResultSet rs = p.executeQuery();
+            viewDatabaseTable.setModel(DbUtils.resultSetToTableModel(rs));
+        }
+        catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override
